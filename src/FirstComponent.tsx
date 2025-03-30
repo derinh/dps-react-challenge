@@ -1,27 +1,61 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
-function FirstComponent() {
-	const [query, setQuery] = useState('');
+//data list
+type DataItem = {
+	id: number;
+	name: string;
+	//city: string;
+	//birthday: number;
+};
 
-	const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-		setQuery(e.target.value);
-	};
+const DataList: React.FC = () => {
+	const [query, setQuery] = useState<string>('');
+	const [data, setData] = useState<DataItem[]>([]);
 
-	const handleSearch = () => {
-		console.log("Searching for:", query);
-	};
+	useEffect(() => {
+		const fetchedData: DataItem[] = [
+			{ id: 1, name: 'Item One' },
+			{ id: 2, name: 'Item Two' },
+			{ id: 3, name: 'Item Three' },
+			{ id: 4, name: 'Item Four' }
+		];
+		setData(fetchedData);
+	}, []);
 
-	return(
+
+	return (
 		<div>
 			<input
 				type="text"
-				value={query}
-				onChange={handleChange}
 				placeholder="Search..."
+				value={query}
+				onChange={(e) => setQuery(e.target.value)}
+
 			/>
-			<button onClick={handleSearch}>Search</button>
+
+			<div
+				style={{
+					display: 'grid',
+					gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))',
+					gap: '16px',
+					marginTop: '20px'
+				}}
+			>
+				{data.map((item) => (
+					<div
+						key={item.id}
+						style={{
+							border: '1px solid #ccc',
+							padding: '8px',
+							borderRadius: '4px'
+						}}
+					>
+						{item.name}
+					</div>
+				))}
+			</div>
 		</div>
 	);
-}
+};
 
-export default FirstComponent;
+export default DataList;
