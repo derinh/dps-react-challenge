@@ -1,5 +1,7 @@
 import dpsLogo from './assets/DPS.svg';
 import './App.css';
+import react from 'react';
+import FirstComponent from './FirstComponent.tsx';
 
 function App() {
 	return (
@@ -10,7 +12,9 @@ function App() {
 				</a>
 			</div>
 			<div className="home-card">
-				<p>Your solution goes here 😊</p>
+				<p>Your solution goes here 😊
+					<FirstComponent></FirstComponent>
+				</p>
 			</div>
 		</>
 	);
