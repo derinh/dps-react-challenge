@@ -1,6 +1,6 @@
 import dpsLogo from './assets/DPS.svg';
 import './App.css';
-import react from 'react';
+//import react from 'react';
 import FirstComponent from './FirstComponent.tsx';
 
 function App() {

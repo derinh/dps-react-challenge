@@ -91,10 +91,18 @@ const DataList: React.FC = () => {
 					</tr>
 				</thead>
 				<tbody>
-					{}
+					{filteredUsers.map(user => {
+						const isHighlighted = highlightOldest && oldestByCity.has(user.id);
+						return (
+							<tr key={user.id} style={{ backgroundColor: isHighlighted ? '#add8e6' : undefined}}>
+								<td>{user.firstName} {user.lastName}</td>
+								<td>{user.address.city}</td>
+								<td>{new Date(user.birthDate).toLocaleDateString()}</td>
+							</tr>
+						);
+					})}
 				</tbody>
 			</table>
-
 		</div>
 	);
 };
