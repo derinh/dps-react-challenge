@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
+import axios from 'axios';
 
 //data list
 interface User {
@@ -17,6 +18,13 @@ const DataList: React.FC = () => {
 	const [cityFilter, setCityFilter] = useState('');
 	const [highlightOldest, setHighlightOldest] = useState(false);
 	const [debouncedNameFilter, setDebouncedNameFilter] = useState('');
+
+	//api fetch
+	useEffect(() => {
+		axios.get('https://dummyjson.com/users')
+			.then(res => setUsers(res.data.users || []));
+	}, []);
+
 
 	//Timer for name filter
 	useEffect(() => {
