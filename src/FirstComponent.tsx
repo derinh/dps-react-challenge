@@ -33,27 +33,19 @@ const DataList: React.FC = () => {
 
 			/>
 
-			<div
-				style={{
-					display: 'grid',
-					gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))',
-					gap: '16px',
-					marginTop: '20px'
-				}}
-			>
-				{data.map((item) => (
-					<div
-						key={item.id}
-						style={{
-							border: '1px solid #ccc',
-							padding: '8px',
-							borderRadius: '4px'
-						}}
-					>
-						{item.name}
-					</div>
-				))}
-			</div>
+			<table border={1} cellPadding={8}>
+				<thead>
+					<tr>
+						<th>Name</th>
+						<th>City</th>
+						<th>Birthday</th>
+					</tr>
+				</thead>
+				<tbody>
+					{}
+				</tbody>
+			</table>
+
 		</div>
 	);
 };
