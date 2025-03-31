@@ -1,37 +1,78 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 
 //data list
-type DataItem = {
+interface User {
 	id: number;
-	name: string;
-	//city: string;
-	//birthday: number;
-};
+	firstName: string;
+	lastName: string;
+	birthDate: string;
+	address: {
+		city: string;
+	};
+}
 
 const DataList: React.FC = () => {
-	const [query, setQuery] = useState<string>('');
-	const [data, setData] = useState<DataItem[]>([]);
+	const [users, setUsers] = useState<User[]>([]);
+	const [nameFilter, setNameFilter] = useState('');
+	const [cityFilter, setCityFilter] = useState('');
+	const [highlightOldest, setHighlightOldest] = useState(false);
+	const [debouncedNameFilter, setDebouncedNameFilter] = useState('');
 
+	//Timer for name filter
 	useEffect(() => {
-		const fetchedData: DataItem[] = [
-			{ id: 1, name: 'Item One' },
-			{ id: 2, name: 'Item Two' },
-			{ id: 3, name: 'Item Three' },
-			{ id: 4, name: 'Item Four' }
-		];
-		setData(fetchedData);
-	}, []);
+		const timer = setTimeout(() => setDebouncedNameFilter(nameFilter), 1000);
+		return () => clearTimeout(timer);
+	}, [nameFilter]);
+
+	//city selection filter
+	const cities = useMemo(() => {
+		return Array.from(new Set(users.map(u => u.address.city)));
+	}, [users]);
+
+	const filteredUsers = useMemo(() => {
+		return users.filter((user: User) => {
+			const nameMatch = `${user.firstName} ${user.lastName}`.toLowerCase().includes(debouncedNameFilter.toLowerCase());
+			const cityMatch = cityFilter === '' || user.address.city === cityFilter;
+			return nameMatch && cityMatch;
+		});
+	}, [users, debouncedNameFilter, cityFilter]);
+
+	const oldestByCity = useMemo(() => {
+		const map = new Map<string, User>();
+		users.forEach(user => {
+			const existing = map.get(user.address.city);
+			if (!existing || new Date(user.birthDate) < new Date(existing.birthDate)) {
+				map.set(user.address.city, user);
+			}
+		});
+		return new Set([...map.values()].map(u => u.id));
+	},[users]);
 
 
 	return (
-		<div>
-			<input
-				type="text"
-				placeholder="Search..."
-				value={query}
-				onChange={(e) => setQuery(e.target.value)}
+		<div style={{ padding: '1rem' }}>
+			<div style={{ display: 'flex', gap: '1rem', marginBottom: '1rem'}}>
+				<input
+					placeholder="Name"
+					value={nameFilter}
+					onChange={e => setNameFilter(e.target.value)}
+				/>
+				<select value={cityFilter} onChange={e => setCityFilter(e.target.value)}>
+					<option value=''>Select city</option>
+					{cities.map(city => (
+						<option key={city} value={city}>{city}</option>
+					))}
+				</select>
 
-			/>
+				<label>
+					<input
+						type="checkbox"
+						checked={highlightOldest}
+						onChange={e => setHighlightOldest(e.target.checked)}
+					/>
+					Highlight oldest per city
+				</label>
+			</div>
 
 			<table border={1} cellPadding={8}>
 				<thead>
