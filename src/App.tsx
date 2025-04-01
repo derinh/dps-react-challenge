@@ -1,7 +1,7 @@
 import dpsLogo from './assets/DPS.svg';
 import './App.css';
 //import react from 'react';
-import FirstComponent from './FirstComponent.tsx';
+import DataList from './DataList.tsx';
 
 function App() {
 	return (
@@ -13,7 +13,7 @@ function App() {
 			</div>
 			<div className="home-card">
 				<p>Your solution goes here 😊
-					<FirstComponent></FirstComponent>
+					<DataList></DataList>
 				</p>
 			</div>
 		</>

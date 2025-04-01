@@ -12,6 +12,10 @@ interface User {
 	};
 }
 
+interface ApiResponse {
+	users: User[];
+}
+
 const DataList: React.FC = () => {
 	const [users, setUsers] = useState<User[]>([]);
 	const [nameFilter, setNameFilter] = useState('');
@@ -21,8 +25,9 @@ const DataList: React.FC = () => {
 
 	//api fetch
 	useEffect(() => {
-		axios.get('https://dummyjson.com/users')
+		axios.get<ApiResponse>('https://dummyjson.com/users')
 			.then(res => setUsers(res.data.users || []));
+
 	}, []);
 
 
